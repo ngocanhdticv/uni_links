@@ -1,0 +1,58 @@
+group 'name.avioli.unilinks'
+version '0.4.0'
+
+buildscript {
+    repositories {
+        google()
+        mavenCentral()  // ✅ THAY ĐỔI: jcenter() → mavenCentral() (deprecated)
+    }
+    
+    dependencies {
+        // ✅ THAY ĐỔI: AGP 3.5.3 → 8.6.0 (minimum cho SDK 35)
+        classpath 'com.android.tools.build:gradle:8.6.0'
+    }
+}
+
+rootProject.allprojects {
+    repositories {
+        google()
+        mavenCentral()  // ✅ THAY ĐỔI: jcenter() → mavenCentral()
+    }
+}
+
+apply plugin: 'com.android.library'
+
+android {
+    // ✅ THÊM: Namespace bắt buộc cho AGP 8.0+
+    namespace 'name.avioli.unilinks'
+    
+    // ✅ THAY ĐỔI: compileSdkVersion 28 → 35
+    compileSdkVersion 35
+
+    defaultConfig {
+        // ✅ THAY ĐỔI: minSdkVersion 16 → 24 (recommended for modern deep linking)
+        minSdkVersion 24  // 16 → 24 for better deep linking support
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+    }
+    
+    // ✅ THAY ĐỔI: lintOptions → lint
+    lint {
+        disable 'InvalidPackage'
+    }
+    
+    // ✅ THÊM: Compile options cho JDK 17 (required for AGP 8.6+)
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
+    }
+}
+
+// ✅ THÊM: Dependencies cho modern Android
+dependencies {
+    implementation 'androidx.core:core:1.13.1'
+    implementation 'androidx.appcompat:appcompat:1.7.0'
+    implementation 'androidx.browser:browser:1.8.0'  // For deep linking
+    
+    // ✅ THÊM: For better intent handling
+    implementation 'androidx.activity:activity:1.9.2'
+}
